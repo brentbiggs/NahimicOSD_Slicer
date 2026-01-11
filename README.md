@@ -52,6 +52,6 @@ Even with the blacklist entry patched, you may still see the Nahimic overlay not
 **Specific Driver Bug:**
 The blacklist functionality is known to fail specifically with `RTKVHD64.sys` version `6.0.9394.1`. 
 
-If you encounter this, updating to a later driver version (e.g., `6.0.9484.1` or higher) fixes the problem immediately. For Alienware users (e.g., Aurora R16), check the [Dell Support Drivers Page](https://www.dell.com/support/product-details/en-us/product/alienware-aurora-r16-desktop/drivers) (YMMV).
+If you encounter this, updating to a later driver version (e.g., `6.0.9484.1` or higher) fixes the problem immediately. For Alienware users with older models use Aurora R16 for the latest Realtek driver, check the [Dell Support Drivers Page](https://www.dell.com/support/product-details/en-us/product/alienware-aurora-r16-desktop/drivers) (YMMV).
 
 The script attempts to detect this version and warns you if found.
