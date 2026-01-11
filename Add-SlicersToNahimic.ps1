@@ -191,7 +191,45 @@ function Add-SlicerExclusions {
     }
 }
 
+<#
+.SYNOPSIS
+    Checks the installed Realtek Audio driver version.
+.DESCRIPTION
+    Warns the user if the Realtek Audio driver version is 6.0.9394.1 or lower,
+    as newer versions (6.0.9484.1+) are required for the blacklist to function correctly.
+#>
+function Test-RealtekDriverVersion {
+    $drivers = Get-CimInstance Win32_PnPSignedDriver -Filter "DeviceName like 'Realtek%Audio%'" -ErrorAction SilentlyContinue
+    
+    if (-not $drivers) {
+        # If no Realtek audio driver found, nothing to warn about regarding this specific version issue.
+        return
+    }
+
+    $minVersion = [System.Version]"6.0.9484.1"
+    $warnThreshold = [System.Version]"6.0.9394.1"
+
+    foreach ($driver in $drivers) {
+        if ($driver.DriverVersion) {
+            try {
+                $currentVersion = [System.Version]$driver.DriverVersion
+                
+                if ($currentVersion -le $warnThreshold) {
+                    Write-Warning "Detected Realtek Audio Driver version $currentVersion."
+                    Write-Warning "The Nahimic blacklist may not work properly with driver versions 6.0.9394.1 or older."
+                    Write-Warning "It is recommended to upgrade to driver version $minVersion or higher."
+                }
+            }
+            catch {
+                # Ignore version parsing errors
+            }
+        }
+    }
+}
+
 # --- Main Script Execution ---
+
+Test-RealtekDriverVersion
 
 Assert-AdminPrivileges
 
