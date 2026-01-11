@@ -169,21 +169,29 @@ function Add-SlicerExclusions {
     if ($anyModified) {
         Write-Host "Configuration updated." -ForegroundColor Cyan
         
-        # Restart AWCCService
-        $serviceName = "AWCCService"
-        if (Get-Service -Name $serviceName -ErrorAction SilentlyContinue) {
-            Write-Host "Restarting $serviceName..." -ForegroundColor Yellow
-            try {
-                Restart-Service -Name $serviceName -Force -ErrorAction Stop
-                Write-Host "$serviceName restarted successfully." -ForegroundColor Green
+        $servicesToRestart = @("AWCCService", "NahimicService")
+        $restartedCount = 0
+
+        foreach ($serviceName in $servicesToRestart) {
+            if (Get-Service -Name $serviceName -ErrorAction SilentlyContinue) {
+                Write-Host "Restarting $serviceName..." -ForegroundColor Yellow
+                try {
+                    Restart-Service -Name $serviceName -Force -ErrorAction Stop
+                    Write-Host "$serviceName restarted successfully." -ForegroundColor Green
+                    $restartedCount++
+                }
+                catch {
+                    Write-Error "Failed to restart service $serviceName : $_"
+                }
             }
-            catch {
-                Write-Error "Failed to restart service $serviceName : $_"
-                Write-Warning "Please restart your computer manually to apply changes."
+            else {
+                Write-Verbose "Service '$serviceName' not found."
             }
         }
-        else {
-            Write-Warning "Service '$serviceName' not found. You may need to restart your computer explicitly."
+
+        if ($restartedCount -eq 0) {
+            Write-Warning "No relevant services were found to restart automatically."
+            Write-Warning "Please restart your computer manually to apply changes."
         }
     }
     else {
