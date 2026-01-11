@@ -6,7 +6,7 @@ A PowerShell script to automatically add 3D slicer applications to the Nahimic A
 
 - **Automatic Discovery**: Recursively searches `C:\ProgramData\A-Volute` for `BlackApps.dat` configuration files.
 - **Idempotent**: Checks if entries already exist before adding them to prevent duplicates.
-- **Service Management**: Automatically restarts the `AWCCService` (Alienware Command Center Service) if changes are applied.
+- **Service Management**: Automatically restarts the `AWCCService` (Alienware Command Center Service) and `NahimicService` if changes are applied.
 - **Safe Editing**: writes files with ANSI encoding and ensures proper trailing newlines, mimicking the original file format.
 - **WhatIf Support**: Supports `-WhatIf` to preview changes without applying them.
 
