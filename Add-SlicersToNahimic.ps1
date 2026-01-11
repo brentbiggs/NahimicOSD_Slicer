@@ -51,7 +51,7 @@ function Add-NahimicConfigEntries {
         # If not passed and not expecting pipeline input, search for defaults
         elseif (-not $PSCmdlet.MyInvocation.ExpectingInput) {
             $searchRoot = "C:\ProgramData\A-Volute"
-            Write-Host "Searching for BlackApps.dat files in $searchRoot..." -ForegroundColor Cyan
+            Write-Verbose "Searching for BlackApps.dat files in $searchRoot..."
             $foundFiles = Get-ChildItem -Path $searchRoot -Filter "BlackApps.dat" -Recurse -ErrorAction SilentlyContinue
             
             if ($foundFiles) {
@@ -77,7 +77,7 @@ function Add-NahimicConfigEntries {
         $processModified = $false
         
         foreach ($p in $currentBatch) {
-            Write-Host "Processing: $p" -ForegroundColor Cyan
+            Write-Verbose "Processing: $p"
             
             if (-not (Test-Path $p)) {
                 Write-Error "Config file not found: $p"
@@ -105,7 +105,7 @@ function Add-NahimicConfigEntries {
                         $fileModified = $true
                     }
                     else {
-                        Write-Host "$exe is already present." -ForegroundColor Gray
+                        Write-Verbose "$exe is already present."
                     }
                 }
 
@@ -155,7 +155,7 @@ function Add-SlicerExclusions {
         "slic3r.exe"
     )
 
-    Write-Host "Checking Slicer Exclusions..." -ForegroundColor Cyan
+    Write-Verbose "Checking Slicer Exclusions..."
     
     # Call the advanced function. It will handle searching if no ConfigPath is provided.
     # Returns an array of booleans if multiple processing steps occur, so we check if any are true.
@@ -187,7 +187,7 @@ function Add-SlicerExclusions {
         }
     }
     else {
-        Write-Host "No changes were needed for any found configuration files." -ForegroundColor Cyan
+        Write-Verbose "No changes were needed for any found configuration files."
     }
 }
 
@@ -199,7 +199,7 @@ function Add-SlicerExclusions {
     as newer versions (6.0.9484.1+) are required for the blacklist to function correctly.
 #>
 function Test-RealtekDriverVersion {
-    $drivers = Get-CimInstance Win32_PnPSignedDriver -Filter "DeviceName like 'Realtek%Audio%'" -ErrorAction SilentlyContinue
+    $drivers = Get-CimInstance Win32_PnPSignedDriver -Filter "DriverName like 'RTKVHD64.sys'" -ErrorAction SilentlyContinue
     
     if (-not $drivers) {
         # If no Realtek audio driver found, nothing to warn about regarding this specific version issue.

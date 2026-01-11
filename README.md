@@ -44,3 +44,14 @@ Add-NahimicConfigEntries -ConfigPath "C:\Path\To\BlackApps.dat" -ExecutablesToAd
 
 - Windows PowerShell 5.1 or later.
 - Administrator privileges (script will request elevation if not present).
+
+## Known Issues / Driver Check
+
+Even with the blacklist entry patched, you may still see the Nahimic overlay notification or experience crashes if you are running an outdated Realtek driver.
+
+**Specific Driver Bug:**
+The blacklist functionality is known to fail specifically with `RTKVHD64.sys` version `6.0.9394.1`. 
+
+If you encounter this, updating to a later driver version (e.g., `6.0.9484.1` or higher) fixes the problem immediately. For Alienware users (e.g., Aurora R16), check the [Dell Support Drivers Page](https://www.dell.com/support/product-details/en-us/product/alienware-aurora-r16-desktop/drivers) (YMMV).
+
+The script attempts to detect this version and warns you if found.
