@@ -152,7 +152,8 @@ function Add-SlicerExclusions {
         "orca-slicer.exe",
         "prusa-slicer.exe",
         "superslicer.exe",
-        "slic3r.exe"
+        "slic3r.exe",
+        "AnycubicSlicerNext.exe"
     )
 
     Write-Verbose "Checking Slicer Exclusions..."
